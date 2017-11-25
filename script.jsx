@@ -37,7 +37,14 @@ var Total = React.createClass({
 
 var ProductList = React.createClass({
   getInitialState: function() {
-    return {total: 0};  
+    return {
+      total: 0,
+      productList: [
+        {name: "Android", price: 123},
+        {name: "Apple", price: 321},
+        {name: "Nokia", price: 432}
+      ]
+    };  
   },
   
   calculateTotal: function(price) {
@@ -49,17 +56,17 @@ var ProductList = React.createClass({
   },
   
   render: function() {
+    var component = this;
+    var products = this.state.productList.map(function(product) {
+      return (
+        <Product name={product.name} price={product.price} 
+            handleShow={component.showProduct}
+            handleTotal={component.calculateTotal}/>
+      );
+    });
     return (
       <div>
-        <Product name="Android" price={123} 
-            handleShow={this.showProduct}
-            handleTotal={this.calculateTotal}/>
-        <Product name="Apple" price={321} 
-            handleShow={this.showProduct}
-            handleTotal={this.calculateTotal}/>
-        <Product name="Nokia" price={432} 
-            handleShow={this.showProduct}
-            handleTotal={this.calculateTotal}/>
+        {products}
         <Total total={this.state.total}/>
       </div>  
     );
