@@ -5,6 +5,7 @@ var Product = React.createClass({
   
   buy: function() {
     this.setState({qty: this.state.qty + 1});
+    this.props.handleTotal(this.props.price);
   },
   
   show: function() {
@@ -28,13 +29,21 @@ var Total = React.createClass({
   render: function() {
     return (
       <div>
-        <h3>Total Cash: </h3>
+        <h3>Total Cash: {this.props.total}</h3>
       </div>  
     );
   }
 });
 
 var ProductList = React.createClass({
+  getInitialState: function() {
+    return {total: 0};  
+  },
+  
+  calculateTotal: function(price) {
+    this.setState({total: this.state.total + price});
+  },
+  
   showProduct : function(name) {
     alert("You selected " + name);
   },
@@ -42,13 +51,16 @@ var ProductList = React.createClass({
   render: function() {
     return (
       <div>
-        <Product name="Android" price="123" 
-            handleShow={this.showProduct}/>
-        <Product name="Apple" price="321" 
-            handleShow={this.showProduct}/>
-        <Product name="Nokia" price="432" 
-            handleShow={this.showProduct}/>
-        <Total/>
+        <Product name="Android" price={123} 
+            handleShow={this.showProduct}
+            handleTotal={this.calculateTotal}/>
+        <Product name="Apple" price={321} 
+            handleShow={this.showProduct}
+            handleTotal={this.calculateTotal}/>
+        <Product name="Nokia" price={432} 
+            handleShow={this.showProduct}
+            handleTotal={this.calculateTotal}/>
+        <Total total={this.state.total}/>
       </div>  
     );
   }
